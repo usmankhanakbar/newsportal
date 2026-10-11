@@ -1,0 +1,4 @@
+beautifulsoup4==4.15.0
+Django==6.1.2
+feedparser==6.0.14
+Requests==2.34.2

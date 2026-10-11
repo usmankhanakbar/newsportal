@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}NewsHub — Latest News from Pakistan's Top Papers{% endblock %}</title>
+<meta name="description"
+      content="{% block meta_description %}Read the latest headlines from The News, Express Tribune, Daily Times, and The Nation — all in one place.{% endblock %}">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NewsHub">
+<meta property="og:title" content="{% block og_title %}NewsHub — Latest Headlines{% endblock %}">
+<meta property="og:description" content="{% block og_description %}All the latest news from Pakistan's top newspapers in one place.{% endblock %}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% block og_image %}https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop{% endblock %}">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{% block tw_title %}NewsHub — Latest Headlines{% endblock %}">
+<meta name="twitter:description" content="{% block tw_description %}All the latest news from Pakistan's top newspapers.{% endblock %}">
+<meta name="twitter:image" content="{% block tw_image %}https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop{% endblock %}">
+
+<script async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+        crossorigin="anonymous"></script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+
+  body {
+    min-height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1770&auto=format&fit=crop');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-color: #1a1e24;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0;
+    background: rgba(10, 14, 23, 0.78);
+    backdrop-filter: blur(3px);
+    z-index: 0;
+  }
+
+  .app {
+    position: relative; z-index: 1;
+    max-width: 1150px; width: 100%;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(14px);
+    border-radius: 2.5rem;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.65),
+                0 0 0 1px rgba(255,255,255,0.12);
+    padding: 2rem 2rem 2.5rem;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .navbar {
+    display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+    gap: 1.2rem; margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(255,215,100,0.5);
+  }
+  .logo h1 {
+    color: #fff; font-size: 2rem; font-weight: 700;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .logo i { color: #ffd764; font-size: 1.8rem; font-style: normal; }
+  .nav-links { display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+  .nav-item {
+    color: #f0f0f0; font-size: 1.05rem; font-weight: 600;
+    cursor: pointer; padding: 0.35rem 0.2rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    text-shadow: 0 2px 6px black;
+  }
+  .nav-item:hover { color: #ffd764; border-bottom-color: #ffd764; }
+  .nav-item.active { color: #ffd764; border-bottom-color: #ffd764; }
+
+  .paper-title {
+    color: #ffd764;
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 3px 10px black;
+    display: flex; align-items: center; gap: 0.8rem;
+    border-left: 7px solid #ffd764;
+    padding-left: 1rem;
+  }
+
+  .ad-slot {
+    margin: 1.5rem 0;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,215,100,0.35);
+    border-radius: 1rem;
+    text-align: center;
+    min-height: 90px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .ad-slot ins { display: block; width: 100%; }
+
+  .headline-list {
+    display: flex; flex-direction: column; gap: 1.1rem;
+  }
+  .headline-card {
+    display: flex; gap: 1.3rem;
+    background: rgba(15,20,28,0.72);
+    backdrop-filter: blur(6px);
+    border-radius: 1.5rem;
+    padding: 1rem 1.3rem 1rem 1rem;
+    border: 1px solid rgba(255,215,100,0.2);
+    transition: all 0.2s;
+    align-items: center;
+  }
+  .headline-card:hover {
+    background: rgba(30,35,48,0.9);
+    border-color: #ffd764;
+    transform: translateX(6px);
+  }
+  .headline-pic {
+    flex-shrink: 0; width: 120px; height: 90px;
+    border-radius: 14px; overflow: hidden;
+    background: #1e232b;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,215,100,0.4);
+  }
+  .headline-pic img { width: 100%; height: 100%; object-fit: cover; }
+  .headline-pic .no-img { font-size: 2.4rem; opacity: 0.65; }
+  .headline-info { flex: 1; min-width: 0; }
+  .headline-title {
+    font-size: 1.15rem; font-weight: 700; color: #fff;
+    text-decoration: none; display: block;
+    margin-bottom: 0.4rem; line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .headline-title:hover { color: #ffd764; text-decoration: underline; }
+  .headline-truncated {
+    font-size: 0.9rem; color: #b4becb; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .empty-msg {
+    color: #cbd3de;
+    font-size: 1.1rem;
+    padding: 1rem 0.5rem;
+    font-style: italic;
+  }
+
+  @media (max-width: 700px) {
+    .headline-card { flex-direction: column; align-items: flex-start; }
+    .headline-pic { width: 100%; height: 160px; }
+    .paper-title { font-size: 1.6rem; }
+    .app { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="navbar">
+    <div class="logo">
+      <h1><i>📰</i> NewsHub</h1>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'home' %}" class="nav-item">Home</a>
+      <a href="{% url 'thenews' %}" class="nav-item {% if newspaper == 'The News' %}active{% endif %}">The News</a>
+      <a href="{% url 'tribune' %}" class="nav-item {% if newspaper == 'Express Tribune' %}active{% endif %}">Tribune</a>
+      <a href="{% url 'dailytimes' %}" class="nav-item {% if newspaper == 'Daily Times' %}active{% endif %}">Daily Times</a>
+      <a href="{% url 'thenation' %}" class="nav-item {% if newspaper == 'The Nation' %}active{% endif %}">Nation</a>
+    </div>
+  </header>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="1111111111"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h2 class="paper-title">
+    {% block paper_icon %}📄{% endblock %}
+    {{ newspaper }}
+  </h2>
+
+  <div class="headline-list">
+    {% block content %}{% endblock %}
+  </div>
+
+  <div class="ad-slot" style="margin-top: 2.5rem;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="3333333333"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+</div>
+
+</body>
+</html>

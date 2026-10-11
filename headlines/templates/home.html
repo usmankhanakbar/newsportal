@@ -1,0 +1,496 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NewsHub — Latest Headlines from The News, Tribune, Daily Times & Nation</title>
+<meta name="description" content="Stay informed with the latest breaking news, top headlines, and daily stories from Pakistan's leading newspapers — The News, Express Tribune, Daily Times, and The Nation — all on one page.">
+<meta name="keywords" content="Pakistan news, breaking news today, latest headlines, The News today, Tribune headlines, Daily Times news, The Nation headlines, Pakistan newspaper aggregator">
+<meta name="author" content="NewsHub">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="google-adsense-account" content="ca-pub-3802548798997279">.
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NewsHub">
+<meta property="og:title" content="NewsHub — All Pakistan News in One Place">
+<meta property="og:description" content="Top headlines from each of Pakistan's leading newspapers, updated live.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NewsHub — All Pakistan News in One Place">
+<meta name="twitter:description" content="Top headlines from each of Pakistan's leading newspapers.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "NewsHub",
+  "url": "{{ request.scheme }}://{{ request.get_host }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ request.scheme }}://{{ request.get_host }}/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- ============================================================= -->
+<!-- GOOGLE ADSENSE — replace ca-pub-XXXXXXXXXXXXXXXX with your ID -->
+<!-- ============================================================= -->
+ <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3802548798997279"
+     crossorigin="anonymous">
+  </script>
+
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+
+  body {
+    min-height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1770&auto=format&fit=crop');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-color: #1a1e24;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0;
+    background: rgba(10, 14, 23, 0.78);
+    backdrop-filter: blur(3px);
+    z-index: 0;
+  }
+
+  .app {
+    position: relative; z-index: 1;
+    max-width: 1300px; width: 100%;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(14px);
+    border-radius: 2.5rem;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.65),
+                0 0 0 1px rgba(255,255,255,0.12);
+    padding: 2rem 2rem 2.5rem;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .navbar {
+    display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+    gap: 1.5rem; margin-bottom: 2.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(255,215,100,0.5);
+  }
+  .logo h1 {
+    color: #fff; font-size: 2.2rem; font-weight: 700;
+    letter-spacing: -0.5px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .logo i { color: #ffd764; font-size: 2rem; font-style: normal; }
+  .nav-links { display: flex; gap: 1.8rem; align-items: center; }
+  .nav-item {
+    color: #f0f0f0; font-size: 1.25rem; font-weight: 600;
+    cursor: pointer; padding: 0.4rem 0.2rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    text-shadow: 0 2px 6px black;
+  }
+  .nav-item:hover { color: #ffd764; border-bottom-color: #ffd764; }
+  .nav-item.active { color: #ffd764; border-bottom-color: #ffd764; }
+
+  .page { display: none; animation: fadeIn 0.25s ease; }
+  .page.active-page { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0.4; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- AD SLOT STYLES ---------- */
+  .ad-slot {
+    margin: 1.5rem 0;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,215,100,0.35);
+    border-radius: 1rem;
+    text-align: center;
+    min-height: 90px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .ad-slot ins { display: block; width: 100%; }
+
+  .latest-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.8rem;
+  }
+  .paper-block {
+    background: rgba(20,24,30,0.72);
+    backdrop-filter: blur(8px);
+    border-radius: 1.8rem;
+    padding: 1.5rem 1.4rem 1rem;
+    border: 1px solid rgba(255,215,100,0.25);
+    box-shadow: 0 15px 25px -8px black;
+  }
+  .paper-block h2 {
+    color: #ffd764; font-size: 1.7rem; font-weight: 700;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    border-left: 6px solid #ffd764;
+    padding-left: 1rem;
+    text-shadow: 0 2px 5px black;
+  }
+  .news-item {
+    display: flex; gap: 1rem; margin-bottom: 1.3rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 1.2rem; padding: 0.9rem 1rem;
+    transition: background 0.2s;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .news-item:hover {
+    background: rgba(255,215,100,0.12);
+    border-color: rgba(255,215,100,0.4);
+  }
+  .news-thumb {
+    flex-shrink: 0; width: 85px; height: 85px;
+    border-radius: 12px; overflow: hidden;
+    background: #2a2f3a;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,215,100,0.3);
+  }
+  .news-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .news-thumb .no-img { color: #ffd764; font-size: 2rem; opacity: 0.65; }
+  .news-content { flex: 1; min-width: 0; }
+  .news-headline {
+    font-size: 1.05rem; font-weight: 700; color: #fff;
+    line-height: 1.4; margin-bottom: 0.4rem;
+    text-decoration: none; display: block;
+    transition: color 0.15s;
+  }
+  .news-headline:hover { color: #ffd764; text-decoration: underline; }
+  .news-brief {
+    font-size: 0.88rem; color: #c0c8d4; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .daily-tabs {
+    display: flex; flex-wrap: wrap; gap: 0.8rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid rgba(255,215,100,0.3);
+    padding-bottom: 0.9rem;
+  }
+  .daily-tab {
+    background: transparent; border: none;
+    color: #ddd; font-size: 1.2rem; font-weight: 600;
+    padding: 0.7rem 1.8rem; border-radius: 40px;
+    cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.3px; border: 1px solid transparent;
+  }
+  .daily-tab:hover {
+    background: rgba(255,215,100,0.15);
+    color: #ffd764;
+    border-color: rgba(255,215,100,0.5);
+  }
+  .daily-tab.active {
+    background: #ffd764; color: #12161c;
+    border-color: #ffd764;
+    box-shadow: 0 6px 14px rgba(255,215,100,0.35);
+  }
+  .paper-panel { display: none; animation: fadeIn 0.2s; }
+  .paper-panel.active-panel { display: block; }
+
+  .headline-list { display: flex; flex-direction: column; gap: 1.1rem; }
+  .headline-card {
+    display: flex; gap: 1.3rem;
+    background: rgba(15,20,28,0.72);
+    backdrop-filter: blur(6px);
+    border-radius: 1.5rem;
+    padding: 1rem 1.3rem 1rem 1rem;
+    border: 1px solid rgba(255,215,100,0.2);
+    transition: all 0.2s; align-items: center;
+  }
+  .headline-card:hover {
+    background: rgba(30,35,48,0.9);
+    border-color: #ffd764;
+    transform: translateX(6px);
+  }
+  .headline-pic {
+    flex-shrink: 0; width: 110px; height: 85px;
+    border-radius: 14px; overflow: hidden;
+    background: #1e232b;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,215,100,0.4);
+  }
+  .headline-pic img { width: 100%; height: 100%; object-fit: cover; }
+  .headline-pic .no-img { font-size: 2.2rem; color: #ffd764; opacity: 0.6; }
+  .headline-info { flex: 1; min-width: 0; }
+  .headline-title {
+    font-size: 1.15rem; font-weight: 700; color: #fff;
+    text-decoration: none; display: block;
+    margin-bottom: 0.4rem; line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .headline-title:hover { color: #ffd764; text-decoration: underline; }
+  .headline-truncated {
+    font-size: 0.88rem; color: #b4becb; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .loading-spinner {
+    color: #ffd764; text-align: center; padding: 2rem;
+    font-size: 1rem; opacity: 0.8;
+  }
+
+  @media (max-width: 900px) {
+    .latest-grid { grid-template-columns: 1fr; }
+    .app { padding: 1.5rem; }
+    .navbar { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 550px) {
+    .headline-card, .news-item { flex-direction: column; align-items: flex-start; }
+    .headline-pic, .news-thumb { width: 100%; height: 140px; }
+    .daily-tab { font-size: 0.95rem; padding: 0.5rem 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="navbar">
+    <div class="logo">
+      <h1><i>📰</i> NewsHub</h1>
+    </div>
+    <div class="nav-links">
+      <div class="nav-item active" id="navLatest">Latest News</div>
+      <div class="nav-item" id="navDaily">Daily News</div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- TOP BANNER AD                                             -->
+  <!-- ========================================================= -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="1111111111"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- ============ LATEST NEWS PAGE ============ -->
+  <section id="latestPage" class="page active-page">
+    <div class="latest-grid">
+      {% for key, block in latest.items %}
+        <div class="paper-block">
+          <h2>{{ block.name }}</h2>
+          {% for art in block.articles %}
+            <article class="news-item">
+              <div class="news-thumb">
+                {% if art.image %}
+                  <img src="{{ art.image }}"
+                       alt="{{ art.title|truncatechars:80 }}"
+                       loading="lazy" width="85" height="85"
+                       onerror="this.parentElement.innerHTML='<span class=\'no-img\'>📰</span>';">
+                {% else %}
+                  <span class="no-img">📰</span>
+                {% endif %}
+              </div>
+              <div class="news-content">
+                <a class="news-headline" href="{{ art.link }}"
+                   target="_blank" rel="noopener noreferrer"
+                   title="{{ art.title }}">
+                  {{ art.title }}
+                </a>
+                {% if art.summary %}
+                  <p class="news-brief">{{ art.summary }}</p>
+                {% endif %}
+              </div>
+            </article>
+          {% empty %}
+            <p style="color:#bbb;">No headlines available right now.</p>
+          {% endfor %}
+        </div>
+
+        {% if forloop.counter|divisibleby:2 and not forloop.last %}
+          <div class="ad-slot" style="grid-column: 1 / -1;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="2222222222"
+                 data-ad-format="fluid"
+                 data-ad-layout-key="-fb+5w+4e-db+86"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ DAILY NEWS PAGE ============ -->
+  <section id="dailyPage" class="page">
+
+    <div class="daily-tabs">
+      <button class="daily-tab active" data-paper="the_news">The News</button>
+      <button class="daily-tab" data-paper="tribune">Tribune</button>
+      <button class="daily-tab" data-paper="daily_times">Daily Times</button>
+      <button class="daily-tab" data-paper="nation">Nation</button>
+    </div>
+
+    <div class="paper-panel active-panel" data-paper="the_news">
+      <div class="headline-list" id="list-the_news">
+        <p class="loading-spinner">Loading all headlines…</p>
+      </div>
+    </div>
+
+    <div class="paper-panel" data-paper="tribune">
+      <div class="headline-list" id="list-tribune">
+        <p class="loading-spinner">Loading all headlines…</p>
+      </div>
+    </div>
+
+    <div class="paper-panel" data-paper="daily_times">
+      <div class="headline-list" id="list-daily_times">
+        <p class="loading-spinner">Loading all headlines…</p>
+      </div>
+    </div>
+
+    <div class="paper-panel" data-paper="nation">
+      <div class="headline-list" id="list-nation">
+        <p class="loading-spinner">Loading all headlines…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- BOTTOM BANNER AD                                          -->
+  <!-- ========================================================= -->
+  <div class="ad-slot" style="margin-top: 2.5rem;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="3333333333"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+</div>
+
+<script>
+  // =========================================================
+  // Top-level nav (Latest / Daily)
+  // =========================================================
+  const navLatest = document.getElementById('navLatest');
+  const navDaily  = document.getElementById('navDaily');
+  const latestPage = document.getElementById('latestPage');
+  const dailyPage  = document.getElementById('dailyPage');
+
+  function showPage(page) {
+    latestPage.classList.remove('active-page');
+    dailyPage.classList.remove('active-page');
+    navLatest.classList.remove('active');
+    navDaily.classList.remove('active');
+
+    if (page === 'latest') {
+      latestPage.classList.add('active-page');
+      navLatest.classList.add('active');
+    } else {
+      dailyPage.classList.add('active-page');
+      navDaily.classList.add('active');
+    }
+  }
+  navLatest.addEventListener('click', () => showPage('latest'));
+  navDaily .addEventListener('click', () => showPage('daily'));
+
+  // =========================================================
+  // Daily sub-tabs — lazy-load full lists via JSON API
+  // =========================================================
+  const dailyTabs = document.querySelectorAll('.daily-tab');
+  const panels    = document.querySelectorAll('.paper-panel');
+  const loaded    = {};
+
+  function escapeHTML(s) {
+    return (s || '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function cardHTML(art) {
+    const img = art.image
+      ? `<img src="${art.image}" alt="${escapeHTML(art.title).slice(0,80)}"
+              loading="lazy" width="110" height="85"
+              onerror="this.parentElement.innerHTML='<span class=\\'no-img\\'>📰</span>';">`
+      : `<span class="no-img">📰</span>`;
+
+    const summary = art.summary
+      ? `<p class="headline-truncated">${escapeHTML(art.summary)}</p>`
+      : '';
+
+    return `
+      <article class="headline-card">
+        <div class="headline-pic">${img}</div>
+        <div class="headline-info">
+          <a class="headline-title" href="${art.link}"
+             target="_blank" rel="noopener noreferrer"
+             title="${escapeHTML(art.title)}">${escapeHTML(art.title)}</a>
+          ${summary}
+        </div>
+      </article>`;
+  }
+
+  function loadPaper(paper) {
+    if (loaded[paper]) return;
+    loaded[paper] = true;
+
+    const container = document.getElementById('list-' + paper);
+    if (!container) return;
+
+    fetch(`/api/daily/${paper}/`)
+      .then(r => r.json())
+      .then(data => {
+        const articles = data.articles || [];
+        if (!articles.length) {
+          container.innerHTML = '<p class="loading-spinner">No headlines available.</p>';
+          return;
+        }
+        container.innerHTML = articles.map(cardHTML).join('');
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      })
+      .catch(err => {
+        console.error('daily fetch failed', err);
+        container.innerHTML = '<p class="loading-spinner">Could not load headlines.</p>';
+      });
+  }
+
+  dailyTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const paper = tab.dataset.paper;
+      dailyTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      panels.forEach(p => {
+        p.classList.toggle('active-panel', p.dataset.paper === paper);
+      });
+      loadPaper(paper);
+    });
+  });
+
+  navDaily.addEventListener('click', () => {
+    loadPaper('the_news');
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Dawn — Latest Headlines | NewsHub{% endblock %}
+{% block meta_description %}Read the latest headlines from Dawn (dawn.com) — breaking news, politics, sports, and more.{% endblock %}
+{% block paper_icon %}🌅{% endblock %}
+
+{% block content %}
+  {% for art in headlines %}
+    <article class="headline-card">
+      <div class="headline-pic">
+        {% if art.image %}
+          <img src="{{ art.image }}" alt="{{ art.title|truncatechars:80 }}"
+               loading="lazy" width="120" height="90"
+               onerror="this.parentElement.innerHTML='<span class=\'no-img\'>📰</span>';">
+        {% else %}
+          <span class="no-img">📰</span>
+        {% endif %}
+      </div>
+      <div class="headline-info">
+        <a class="headline-title" href="{{ art.link }}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{ art.title }}">{{ art.title }}</a>
+        {% if art.summary %}<p class="headline-truncated">{{ art.summary }}</p>{% endif %}
+      </div>
+    </article>
+  {% empty %}
+    <p class="empty-msg">No headlines available from Dawn right now.</p>
+  {% endfor %}
+{% endblock %}

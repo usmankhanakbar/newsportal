@@ -1,0 +1,25 @@
+# Virtual Environment
+.vevn/
+.venv/
+venv/
+env/
+ENV/
+
+# Django
+db.sqlite3
+*.log
+local_settings.py
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Media & Static (usually)
+media/
+staticfiles/

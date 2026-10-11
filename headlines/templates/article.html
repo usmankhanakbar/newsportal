@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title|default:"Article" }} | NewsHub</title>
+<meta name="description" content="{{ summary|default:''|truncatechars:160 }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ summary|truncatechars:160 }}">
+<meta property="og:image" content="{{ image }}">
+<meta property="og:type" content="article">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{ title|escapejs }}",
+  "image": ["{{ image }}"],
+  "datePublished": "{% now 'c' %}",
+  "dateModified": "{% now 'c' %}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "NewsHub"
+  }
+}
+</script>
+
+<style>
+  body { font-family: 'Segoe UI', system-ui, sans-serif;
+         background: #12161c; color: #e8eaee;
+         max-width: 720px; margin: 2rem auto; padding: 1.5rem; line-height: 1.6; }
+  h1 { font-size: 1.8rem; margin-bottom: 1rem; color: #ffd764; }
+  img { max-width: 100%; border-radius: 12px; margin: 1rem 0; }
+  .summary { font-size: 1.1rem; color: #c0c8d4; margin: 1rem 0; }
+  a.src { display: inline-block; margin-top: 1.5rem; color: #ffd764;
+          text-decoration: none; font-weight: 600; }
+  a.src:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <h1>{{ title }}</h1>
+  {% if image %}<img src="{{ image }}" alt="{{ title }}">{% endif %}
+  {% if summary %}<p class="summary">{{ summary }}</p>{% endif %}
+  {% if url %}
+    <a class="src" href="{{ url }}" target="_blank" rel="noopener noreferrer">
+      Read full article on the source site →
+    </a>
+  {% endif %}
+</body>
+</html>
